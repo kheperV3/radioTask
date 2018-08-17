@@ -7,7 +7,7 @@ composée :
 - le programme de la tache qui interprete les actions précédentes : "radio.c" (=> https://github.com/kheperV3/radioTask)
 
 Pour compiler radio.c il faut :
-- disposer de la bibliotheque vlc : libvlc-dev
+- disposer de la bibliotheque vlc : libvlc-dev (sudo apt-get install libvlx-dev)
 - executer la commande : cc -o radio -l vlc radio.c
 - placer l'executable radio dans le repertoire /home/pi
 
