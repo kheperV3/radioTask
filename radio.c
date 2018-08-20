@@ -125,7 +125,13 @@ delay = -1000;
 for(;;)
 {
 usleep(500000);
-
+p = open("/var/lib/snips/skills/wpa_supplicant.conf",O_RDONLY);
+if(p == 0)
+	{
+	close(p);
+	system("sudo cp /var/lib/snips/skills/wpa_supplicant.conf /etc/wpa_supplicant");
+	system("sudo rm /var/lib/snips/skills/wpa_supplicant.conf");
+	}
 
 p = open("/var/lib/snips/skills/live",O_RDONLY);
 n = read(p,b,4);
