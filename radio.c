@@ -126,7 +126,7 @@ for(;;)
 {
 usleep(500000);
 p = open("/var/lib/snips/skills/wpa_supplicant.conf",O_RDONLY);
-if(p == 0)
+if(p >= 0)
 	{
 	close(p);
 	system("sudo cp /var/lib/snips/skills/wpa_supplicant.conf /etc/wpa_supplicant");
