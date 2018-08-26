@@ -72,6 +72,7 @@ int live;
 int hotword;
 int volume;
 int delay;
+int session;
 
 
 
@@ -91,12 +92,14 @@ system ("touch /var/lib/snips/skills/live");
 system ("touch /var/lib/snips/skills/link"); 
 system ("touch /var/lib/snips/skills/volume");
 system ("touch /var/lib/snips/skills/delay"); 
+system ("touch /var/lib/snips/skills/session");
  
 system("sudo chmod 666 /var/lib/snips/skills/live");
 system("sudo chmod 666 /var/lib/snips/skills/link");
 system("sudo chmod 666 /var/lib/snips/skills/volume");
 system("sudo chmod 666 /var/lib/snips/skills/delay");
-
+system("sudo chmod 666 /var/lib/snips/skills/session");
+	
 //intialisation des gpio 23 et 25
 ledOUT;
 butINPUP;
@@ -113,7 +116,10 @@ close(p);
 p = open("/var/lib/snips/skills/delay",O_WRONLY);
 n = write(p,"0000",5);
 close(p);
-
+p = open("/var/lib/snips/skills/session",O_WRONLY);
+n = write(p,"0000",5);
+close(p);
+	
 hotword = 1;
 volume = 50;
 delay = -1000;
@@ -125,13 +131,25 @@ delay = -1000;
 for(;;)
 {
 usleep(500000);
-p = open("/var/lib/snips/skills/wpa_supplicant.conf",O_RDONLY);
-if(p >= 0)
-	{
-	close(p);
-	system("sudo cp /var/lib/snips/skills/wpa_supplicant.conf /etc/wpa_supplicant");
-	system("sudo rm /var/lib/snips/skills/wpa_supplicant.conf");
-	}
+p = open("/var/lib/snips/skills/session",O_RDONLY);
+n = read(p,b,4);
+close(p);
+sscanf(b,"%d",&session);
+	
+if((butVal == 0) && (session == 0))
+   {
+    p = open("/var/lib/snips/skills/session",O_WRONLY);
+    n = write(p,"0001",5);
+    close(p);   
+   }
+if((butVal == 1) && (session == 2))
+   {
+    p = open("/var/lib/snips/skills/session",O_WRONLY);
+    n = write(p,"0000",5);
+    close(p);   
+   }
+	
+	
 
 p = open("/var/lib/snips/skills/live",O_RDONLY);
 n = read(p,b,4);
