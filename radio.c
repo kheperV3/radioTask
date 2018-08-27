@@ -2,7 +2,7 @@
 moteur de la radio
 tache de fond periodique (0.5 sec)
 elle se synchronise avec la partie conversationnelle Snips
-par 4 fichiers dans le repertoire /var/lib/snips/skills:
+par 5 fichiers dans le repertoire /var/lib/snips/skills:
 - link ==> lien vers la radio en cours
 - volume ==> volume en cours
 - live ==> etat de fonctionnement de la radio
@@ -15,6 +15,10 @@ par 4 fichiers dans le repertoire /var/lib/snips/skills:
 		    = 6     arrêt temporisé demandé (shutdown)
                     
 - delay ==> delai en secondes avant l'arrêt
+- session ==> nouvelle session demandée
+		    = 0     pas de demande (bouton off)
+		    = 1     demande faite (bouton on)
+		    = 2     demande traitee
 */
 #include <stdio.h>
 #include <sys/mman.h>
@@ -136,13 +140,13 @@ n = read(p,b,4);
 close(p);
 sscanf(b,"%d",&session);
 	
-if((butVal == 0) && (session == 0))
+if((butVAL == 0) && (session == 0))
    {
     p = open("/var/lib/snips/skills/session",O_WRONLY);
     n = write(p,"0001",5);
     close(p);   
    }
-if((butVal == 1) && (session == 2))
+if((butVAL == 1) && (session == 2))
    {
     p = open("/var/lib/snips/skills/session",O_WRONLY);
     n = write(p,"0000",5);
